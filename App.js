@@ -1,21 +1,15 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import emoji from "./src/assets/vote/3.png";
+import { StyleSheet, Text, View, TextInput } from "react-native";
 export default function Start() {
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={emoji} />
       <Text style={styles.title}>총회 시작</Text>
-      <Text style={styles.text}>2024년 5월 28일자 총회가 시작 되었습니다!</Text>
-      <Text style={styles.text}>
-        학생들은 안내에 따라 투표를 진행해 주세요.
-      </Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("start")}
-      >
-        <Text style={styles.buttonText}>투표 시작하기</Text>
-      </TouchableOpacity>
+      <Text style={styles.text}>시작 전, 학번을 기입해주세요!</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={text}
+      />
     </View>
   );
 }
@@ -47,21 +41,6 @@ const styles = StyleSheet.create({
     fontFamily: "NanumSquareOTF",
     fontWeight: "800",
     lineHeight: 28,
-    wordWrap: "break-word",
-  },
-  button: {
-    marginTop: 16,
-    backgroundColor: "#F49E15",
-    paddingVertical: 8,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 12,
-    fontFamily: "NanumSquareOTF",
-    fontWeight: "400",
-    lineHeight: 16,
     wordWrap: "break-word",
   },
 });
