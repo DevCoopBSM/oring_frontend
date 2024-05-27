@@ -16,6 +16,9 @@ import arrow from "../assets/arrow.png";
 export default function Start({ navigation }) {
   const [stuCode, setStuCode] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [stuNumber, setStuNumber] = useState("");
+  const [stuName, setStuName] = useState("");
 
   const onChangeText = (inputStuCode) => {
     setStuCode(inputStuCode);
@@ -27,32 +30,29 @@ export default function Start({ navigation }) {
       .post("https://oring.bsm-aripay.kr/api/auth/login", { stuCode: stuCode })
       .then((response) => {
         console.log("Server response: ", response.data);
-        // 서버 응답 데이터가 예상하는 형식인지 확인
-        if (response.data && response.data.stuNumber) {
-          // 응답 데이터가 올바르면 "Ready" 화면으로 이동
-          navigation.navigate("Ready");
+        if (response.data && response.data.stuNumber && response.data.stuName) {
+          setStuNumber(response.data.stuNumber);
+          setStuName(response.data.stuName);
+          setIsSuccess(true);
+          setModalVisible(true);
         } else {
-          // 응답 데이터가 예상한 형식이 아니면 실패로 처리
           console.log("Login failed: ", response.data);
+          setIsSuccess(false);
           setModalVisible(true);
         }
       })
       .catch((error) => {
-        if (error.response) {
-          // 서버가 응답했지만, 상태 코드가 범위 2xx 이외인 경우
-          console.error("Error response: ", error.response.data);
-          console.error("Error status: ", error.response.status);
-          console.error("Error headers: ", error.response.headers);
-        } else if (error.request) {
-          // 요청이 만들어졌지만, 서버로부터 응답을 받지 못한 경우
-          console.error("Error request: ", error.request);
-        } else {
-          // 요청을 설정하는 중에 발생한 에러
-          console.error("Error message: ", error.message);
-        }
-        console.error("Error config: ", error.config);
+        console.error("Error: ", error);
+        setIsSuccess(false);
         setModalVisible(true);
       });
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    if (isSuccess) {
+      navigation.navigate("Ready");
+    }
   };
 
   return (
@@ -82,15 +82,21 @@ export default function Start({ navigation }) {
         <View style={styles.modalBackground}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalTitle}>식별 코드 인식 실패</Text>
+              <Text style={styles.modalTitle}>
+                {isSuccess
+                  ? `${stuNumber} ${stuName}님 로그인되었습니다!`
+                  : "식별 코드 인식 실패"}
+              </Text>
               <Text style={styles.modalText}>
-                식별 코드를 다시 확인해주세요
+                {isSuccess
+                  ? "확인 버튼을 눌러주세요."
+                  : "식별 코드를 다시 확인해주세요"}
               </Text>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={handleCloseModal}
               >
-                <Text style={styles.textStyle}>닫기</Text>
+                <Text style={styles.textStyle}>확인</Text>
               </Pressable>
             </View>
           </View>
