@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
-import emoji from "./src/assets/vote/5.png";
+import emoji from "../assets/vote/5.png";
 export default function Develop() {
   return (
     <View style={styles.container}>
