@@ -1,9 +1,17 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import emoji from "../assets/vote/2.png";
-export default function Ready() {
+
+export default function Ready({ route, navigation }) {
+  const { stuNumber, stuName } = route.params;
+
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.loginText}>
+          {stuNumber} {stuName}님 로그인되었습니다
+        </Text>
+      </View>
       <Image style={styles.logo} source={emoji} />
       <Text style={styles.title}>총회가 준비 중이에요!</Text>
       <Text style={styles.text}>
@@ -25,6 +33,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  header: {
+    position: "absolute",
+    top: 40,
+    right: 20,
+  },
+  loginText: {
+    color: "black",
+    fontSize: 14,
+    fontFamily: "NanumSquareOTF",
+    fontWeight: "700",
   },
   logo: {
     width: 100,

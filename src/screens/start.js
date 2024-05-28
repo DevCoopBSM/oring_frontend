@@ -51,12 +51,17 @@ export default function Start({ navigation }) {
   const handleCloseModal = () => {
     setModalVisible(false);
     if (isSuccess) {
-      navigation.navigate("Ready");
+      navigation.navigate("Ready", { stuNumber, stuName });
     }
   };
 
   return (
     <View style={styles.container}>
+      {stuNumber && stuName ? (
+        <Text>
+          {stuNumber} {stuName}님 로그인되었습니다
+        </Text>
+      ) : null}
       <Text style={styles.title}>총회 시작</Text>
       <Text style={styles.text}>시작 전, 학번을 입력해주세요!</Text>
       <View style={styles.inputContainer}>
@@ -64,7 +69,7 @@ export default function Start({ navigation }) {
           style={styles.input}
           onChangeText={onChangeText}
           value={stuCode}
-          placeholder="ex) 1129"
+          placeholder="ex) bia537"
         />
         <TouchableOpacity style={styles.button} onPress={onSubmit}>
           <Image style={styles.logo} source={arrow} />
